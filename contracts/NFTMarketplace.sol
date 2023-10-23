@@ -51,7 +51,7 @@ contract NFTMarketplace is ERC721URIStorage {
     function getListPrice() public view returns (uint256) {
         return listPrice;
     }
-
+    // a simple fetch function
     function getLatestIdToListedToken() public view returns (ListedToken memory) {
         uint256 currentTokenId = _tokenIds.current();
         return idToListedToken[currentTokenId];
@@ -66,6 +66,7 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     //The first time a token is created, it is listed here
+    //payable : matlab some eth transaction will be there
     function createToken(string memory tokenURI, uint256 price) public payable returns (uint) {
         //Increment the tokenId counter, which is keeping track of the number of minted NFTs
         _tokenIds.increment();
@@ -82,7 +83,8 @@ contract NFTMarketplace is ERC721URIStorage {
 
         return newTokenId;
     }
-
+    
+    //This function is called by createToken and is used to update the mapping of tokenId to token info
     function createListedToken(uint256 tokenId, uint256 price) private {
         //Make sure the sender sent enough ETH to pay for listing
         require(msg.value == listPrice, "Hopefully sending the correct price");
